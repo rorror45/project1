@@ -38,12 +38,12 @@ app = Flask(__name__, template_folder=tmpl_dir)
 #     DATABASEURI = "postgresql://ewu2493:foobar@<IP_OF_POSTGRE_SQL_SERVER>/postgres"
 #
 # Swap out the URI below with the URI for the database created in part 2
-DATABASEURI = "sqlite:///test.db"
+DATABASEURI = "postgresql://jj2882:4zpdd@104.196.166.54/postgres"
 
 
 #
 # This line creates a database engine that knows how to connect to the URI above
-#testtesttest
+#
 engine = create_engine(DATABASEURI)
 
 
@@ -106,7 +106,10 @@ def teardown_request(exception):
 # @app.route is a decorator around index() that means:
 #   run index() whenever the user tries to access the "/" path using a GET request
 #
-# If you wanted the user to go to e.g., localhost:8111/foobar/ with POST or GET then you could use
+# If you wanted the user to go to e.g., localhost:8111/foobar/ with 
+
+
+or GET then you could use
 #
 #       @app.route("/foobar/", methods=["POST", "GET"])
 #
