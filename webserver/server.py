@@ -201,7 +201,7 @@ def login():
         for result in cursor:
           emails.append(result['email'])  # can also be accessed using result[0]
           cursor.close()
-        if request.form['email'] == emails
+        if request.form['email'] == emails[0]
             session['username'] = request.form['email']
     else:
         return render_template("login.html")
