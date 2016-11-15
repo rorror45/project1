@@ -214,6 +214,18 @@ def login():
 def individual():
     return render_template('individual.html')
 
+@app.route('/options')
+def individual():
+    return render_template('options.html')
+
+@app.route('/stocks')
+def individual():
+    return render_template('stocks.html')
+
+@app.route('/questions')
+def individual():
+    return render_template('questions.html')
+
 if __name__ == "__main__":
   import click
 
