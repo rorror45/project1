@@ -210,6 +210,9 @@ def login():
     abort(401)
     this_is_never_executed()
 
+@app.route('/individual')
+def individual():
+    return render_template('individual.html')
 
 if __name__ == "__main__":
   import click
