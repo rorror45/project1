@@ -1,0 +1,10 @@
+<!DOCTYPE html>
+<html lang="en">
+<body>
+    <ul id="company">
+    {% for item in company %}
+        <li>{{ item }}</li>
+    {% endfor %}
+    </ul>
+</body>
+</html>
