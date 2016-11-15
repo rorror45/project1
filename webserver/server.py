@@ -122,6 +122,12 @@ def index():
   # DEBUG: this is debugging code to see what request looks like
   print request.args
 
+  cursor = g.conn.execute("SELECT * FROM users")
+  names = []
+  for result in cursor:
+    names.append(result['name'])  # can also be accessed using result[0]
+  cursor.close()
+
 
   #
   # example of a database query
@@ -192,6 +198,15 @@ def add():
 
 @app.route('/login')
 def login():
+    if request.method == 'POST':
+        cursor = g.conn.execute("SELECT email FROM users")
+        emails = []
+        for result in cursor:
+          emails.append(result['email'])  # can also be accessed using result[0]
+          cursor.close()
+        if request.form['email'] == emails
+    else:
+        return render_template("login.html")
     abort(401)
     this_is_never_executed()
 
