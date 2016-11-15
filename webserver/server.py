@@ -13,12 +13,12 @@ Read about it online.
 import os
 from sqlalchemy import *
 from sqlalchemy.pool import NullPool
-from flask import Flask, request, render_template, g, redirect, Response
+from flask import Flask, request, render_template, g, redirect, Response, session
 
 tmpl_dir = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'templates')
 app = Flask(__name__, template_folder=tmpl_dir)
 
-
+app.secret_key = 'Thiskeyisntactuallysupersecretlol'
 #
 # The following uses the postgresql test.db -- you can use this for debugging purposes
 # However for the project you will need to connect to your Part 2 database in order to use the
@@ -122,13 +122,6 @@ def index():
   # DEBUG: this is debugging code to see what request looks like
   print request.args
 
-  cursor = g.conn.execute("SELECT * FROM users")
-  names = []
-  for result in cursor:
-    names.append(result['name'])  # can also be accessed using result[0]
-  cursor.close()
-
-
   #
   # example of a database query
   #
@@ -205,26 +198,96 @@ def login():
           emails.append(result['email'])  # can also be accessed using result[0]
           cursor.close()
         if request.form['email'] == emails
+            session['username'] = request.form['email']
     else:
         return render_template("login.html")
     abort(401)
     this_is_never_executed()
 
+
+  cursor = g.conn.execute("SELECT name FROM test")
+  names = []
+  for result in cursor:
+    names.append(result['name'])  # can also be accessed using result[0]
+  cursor.close()
 @app.route('/individual')
 def individual():
-    return render_template('individual.html')
+    user = session['username']
+    #Query the user type
+    cursor = g.conn.execute("SELECT email, type_user FROM individuals WHERE email == " + user")
+    emails = []
+    for result in cursor:
+        emails.append(result[0])
+    cursor.close()
+    if emails.type_user == 'individual':
+        return render_template('individual.html')
+    else:
+        return "You aren't an individual"
 
 @app.route('/options')
-def individual():
-    return render_template('options.html')
+def options():
+    user = session['username']
+    #usertype = Query the user type
+    cursor = g.conn.execute("SELECT email, type_user FROM individuals WHERE email == " + user")
+    emails = []
+    for result in cursor:
+        emails.append(result[0])
+    cursor.close()
+    if emails.type_user == 'individual':
+        cursor = g.conn.execute("SELECT oid FROM buysell_options WHERE email == " + user")
+        oid = []
+        for result in cursor:
+            oid.append(result[0])
+        cursor.close()
+        
+        cursor = g.conn.execute("SELECT * FROM options WHERE oid == oid[0]")
+        options = []
+        for result in cursor:
+            options.append(result[0])
+        cursor.close()
+        
+    #if #usertype == individual:
+        #query for oid: user
+        return render_template('options.html', youroptions=options)
+    else:
+        return "You have no options."
 
 @app.route('/stocks')
-def individual():
-    return render_template('stocks.html')
+def stocks():
+    user = session['username']
+    #Query the user type
+    if #usertype == individual:
+        #query for primary key: user
+        stocks = #Whatever stocks you have
+        return render_template('stocks.html', yourstocks=stocks)
+    else:
+        return "You aren't an individual"
 
 @app.route('/questions')
-def individual():
-    return render_template('questions.html')
+def questions():
+    user = session['username']
+    #Query the user type
+    if #usertype == individual:
+        #query for primary key: user
+        questions = #whatever questions you have
+        return render_template('questions.html', yourquestions=questions)
+    else:
+        return "You aren't an individual"
+
+@app.route('/company')
+def company():
+    user = session['username']
+    #Query the user type
+    #query for primary key: company
+        company = #whatever your company you have
+        return render_template('questions.html', company=company)
+    else:
+        return "You aren't a company"
+
+@app.route('/forum')
+def company():
+    forum = #query forumposts
+    return render_template('questions.html', forum=forum)
 
 if __name__ == "__main__":
   import click
