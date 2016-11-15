@@ -57,6 +57,7 @@ engine = create_engine(DATABASEURI)
 # 
 # The setup code should be deleted once you switch to using the Part 2 postgresql database
 #
+'''
 engine.execute("""DROP TABLE IF EXISTS test;""")
 engine.execute("""CREATE TABLE IF NOT EXISTS test (
   id serial,
@@ -64,6 +65,7 @@ engine.execute("""CREATE TABLE IF NOT EXISTS test (
 );""")
 engine.execute("""INSERT INTO test(name) VALUES ('grace hopper'), ('alan turing'), ('ada lovelace');""")
 #
+'''
 # END SQLITE SETUP CODE
 #
 
@@ -71,12 +73,12 @@ engine.execute("""INSERT INTO test(name) VALUES ('grace hopper'), ('alan turing'
 
 @app.before_request
 def before_request():
-  """
+  '''
   This function is run at the beginning of every web request 
   (every time you enter an address in the web browser).
   We use it to setup a database connection that can be used throughout the request
   The variable g is globally accessible
-  """
+  '''
   try:
     g.conn = engine.connect()
   except:
