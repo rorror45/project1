@@ -18,7 +18,7 @@ from flask import Flask, request, render_template, g, redirect, Response, sessio
 tmpl_dir = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'templates')
 app = Flask(__name__, template_folder=tmpl_dir)
 
-app.secret_key = 'Thiskeyisntactuallysupersecretlol'
+app.secret_key = 'secretkey'
 #
 # The following uses the postgresql test.db -- you can use this for debugging purposes
 # However for the project you will need to connect to your Part 2 database in order to use the
@@ -119,12 +119,15 @@ def index():
   See its API: http://flask.pocoo.org/docs/0.10/api/#incoming-request-data
   """
 
+  return render_template("login.html")
+  """
   # DEBUG: this is debugging code to see what request looks like
   print request.args
 
   #
   # example of a database query
   #
+  
   cursor = g.conn.execute("SELECT name FROM test")
   names = []
   for result in cursor:
@@ -165,6 +168,7 @@ def index():
   # for example, the below file reads template/index.html
   #
   return render_template("index.html", **context)
+  """
 
 #
 # This is an example of a different path.  You can see it at
@@ -178,7 +182,7 @@ def index():
 def another():
   return render_template("anotherfile.html")
 
-
+"""
 # Example of adding new data to the database
 @app.route('/add', methods=['POST'])
 def add():
@@ -187,7 +191,7 @@ def add():
   cmd = 'INSERT INTO test(name) VALUES (:name1), (:name2)';
   g.conn.execute(text(cmd), name1 = name, name2 = name);
   return redirect('/')
-
+"""
 
 @app.route('/login')
 def login():
